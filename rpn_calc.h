@@ -52,11 +52,11 @@ namespace rpn {
         operator_type op;
         GiNaC::ex number;
 
-        token(std::string str);
+        token(const std::string &str);
 
-        token(GiNaC::numeric);
+        token(const GiNaC::numeric &);
 
-        token(GiNaC::ex);
+        token(const GiNaC::ex &);
 
     };
 
@@ -68,7 +68,7 @@ namespace rpn {
 
         rpn_calc() : stack() { };
 
-        ex parse(std::string line);
+        ex parse(const std::string &line);
 
     };
 };

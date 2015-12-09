@@ -6,7 +6,7 @@
 
 namespace rpn {
 
-    token::token(std::string str) {
+    token::token(const std::string &str) {
         if (str.front() >= '0' && str.front() <= '9') {
             type = NUMBER;
             number = GiNaC::numeric(str.c_str());
@@ -68,18 +68,18 @@ namespace rpn {
         }
     }
 
-    token::token(GiNaC::numeric numeric) {
+    token::token(const GiNaC::numeric &numeric) {
         type = NUMBER;
         number = numeric;
     }
 
-    token::token(ex ex1) {
+    token::token(const ex &ex1) {
         type = NUMBER;
         number = ex1;
 
     }
 
-    ex rpn_calc::parse(std::string line) {
+    ex rpn_calc::parse(const std::string &line) {
         std::string word;
         std::stringstream stringstream(line);
         while (stringstream >> word) {
@@ -234,17 +234,16 @@ namespace rpn {
                         break;
                     }
                     case EVAL_N_DIGITS: {
-                        /*FIXME*/
-//                        ex ex1(stack.back().number);
-//                        stack.pop_back();
-//                        ex digits (stack.back().number);
-//                        stack.pop_back();
-//                        Digits = (int) digits.evalf().integer_content();
-//                        stack.emplace_back(ex1.evalf());
+                        ex digits (stack.back().number);
+                        stack.pop_back();
+                        ex ex1(stack.back().number);
+                        stack.pop_back();
+                        Digits = ex_to<numeric>(digits.evalf()).to_double();
+                        stack.emplace_back(ex1.evalf());
                         break;
                     }
                     default:
-                        throw std::runtime_error("what");
+                        throw std::runtime_error("Invalid Token");
                 }
             } else {
                 stack.push_back(t);
