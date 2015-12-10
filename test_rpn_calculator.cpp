@@ -1,34 +1,54 @@
 // (c) Copyright 2015 Josh Wright
 #include <cassert>
+#include <cmath>
+#include <limits>
 #include "rpn_calc.h"
 
 int main(int argc, char const *argv[]) {
     using std::cout;
     using std::endl;
     using namespace rpn;
+    using std::pow;
+    using std::sqrt;
+    using std::log;
+    using std::log2;
+    using std::log10;
+    using std::exp;
+    using std::exp2;
+    using std::sin;
+    using std::cos;
+    using std::tan;
+    using std::asin;
+    using std::acos;
+    using std::atan;
+    using std::atan2;
+    using std::ceil;
+    using std::floor;
+    using std::fabs;
+
     {
-        assert(rpn_calc().parse("4 3 +") == 4+3);
-        assert(rpn_calc().parse("4 3 + 5 2 - / 8 *") == numeric("56/3"));
-        assert(rpn_calc().parse("5 ^2") == 25);
-        assert(rpn_calc().parse("9 sqrt") == 3);
-        assert(rpn_calc().parse("125 3 root") == 5);
-        assert(rpn_calc().parse("125 3 rt") == 5);
-        assert(rpn_calc().parse("3 3 pow") == 27);
-        assert(rpn_calc().parse("3 4 ^") == 81);
-        assert(rpn_calc().parse("4 30 ^") == numeric("1152921504606846976"));
-        assert(rpn_calc().parse("10000 10 loga @") == numeric("4"));
-        assert(rpn_calc().parse("10000 log @") == numeric("4"));
-        assert(rpn_calc().parse("4294967296 lg @") == numeric("32"));
-        assert(rpn_calc().parse("4294967296 lg @") == numeric("32"));
-        assert(rpn_calc().parse("pi") == Pi);
-        assert(rpn_calc().parse("Pi") == Pi);
-        assert(rpn_calc().parse("PI") == Pi);
-        assert(rpn_calc().parse("PI sin") == sin(Pi));
-        assert(rpn_calc().parse("PI cos") == cos(Pi));
-        assert(rpn_calc().parse("PI tan") == tan(Pi));
-        assert(rpn_calc().parse("0.3450 asin @") == asin(numeric("0.345")));
-        assert(rpn_calc().parse("0.7345 acos @") == acos(numeric("0.7345")));
-        assert(rpn_calc().parse("0.1234 atan @") == atan(numeric("0.1234")));
+        assert(parse_rpn("4 3 +") == 4+3);
+        assert(parse_rpn("4 3 + 5 2 - / 8 *") == 56.0L/3.0L);
+        assert(parse_rpn("5 ^2") == 25);
+        assert(parse_rpn("9 sqrt") == 3);
+        assert(parse_rpn("125 3 root") == 5);
+        assert(parse_rpn("125 3 rt") == 5);
+        assert(parse_rpn("3 3 pow") == 27);
+        assert(parse_rpn("3 4 ^") == 81);
+        assert(parse_rpn("4 30 ^") == 1152921504606846976);
+        assert(parse_rpn("10000 10 loga") == 4);
+        assert(parse_rpn("10000 log") == 4);
+        assert(parse_rpn("4294967296 lg") == 32);
+        assert(parse_rpn("4294967296 lg") == 32);
+        assert(parse_rpn("pi") == Pi);
+        assert(parse_rpn("Pi") == Pi);
+        assert(parse_rpn("PI") == Pi);
+        assert(parse_rpn("PI sin") == sin(Pi));
+        assert(parse_rpn("PI cos") == cos(Pi));
+        assert(parse_rpn("PI tan") == tan(Pi));
+        assert(fabs(parse_rpn("0.3450 asin") - asin(0.3450)) < long_double_threshold);
+        assert(fabs(parse_rpn("0.7345 acos") - acos(0.7345)) < long_double_threshold);
+        assert(fabs(parse_rpn("0.1234 atan") - atan(0.1234)) < long_double_threshold);
     }
 
     return 0;

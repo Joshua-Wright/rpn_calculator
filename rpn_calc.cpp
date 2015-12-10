@@ -1,21 +1,44 @@
-//
-// Created by j0sh on 12/8/15.
-//
-
+#include <cmath>
+#include <string>
+#include <sstream>
+#include <vector>
 #include "rpn_calc.h"
 
 namespace rpn {
 
+    using std::cout;
+    using std::endl;
+    using std::cerr;
+
+    using std::pow;
+    using std::sqrt;
+    using std::log;
+    using std::log2;
+    using std::log10;
+    using std::exp;
+    using std::exp2;
+    using std::sin;
+    using std::cos;
+    using std::tan;
+    using std::asin;
+    using std::acos;
+    using std::atan;
+    using std::atan2;
+    using std::ceil;
+    using std::floor;
+    using std::fabs;
+
+
     token::token(const std::string &str) {
         if (str.front() >= '0' && str.front() <= '9') {
             type = NUMBER;
-            number = GiNaC::numeric(str.c_str());
+            number = std::stold(str);
         } else if (str == "pi" || str == "Pi" || str == "PI") {
             type = NUMBER;
-            number = GiNaC::Pi;
+            number = PI;
         } else if (str == "e") {
             type = NUMBER;
-            number = exp(numeric(1));
+            number = e;
         } else {
             type = OPERATOR;
             if (str == "+") {
@@ -60,26 +83,19 @@ namespace rpn {
                 op = ACOS_RAD;
             } else if (str == "atan") {
                 op = ATAN_RAD;
-            } else if (str == "@") {
-                op = EVAL;
-            } else if (str == "@n") {
-                op = EVAL_N_DIGITS;
+            } else if (str == "floor") {
+                op = FLOOR;
+            } else if (str == "ceil") {
+                op = CEIL;
+            } else {
+                throw std::runtime_error("Invalid Token");
             }
         }
     }
 
-    token::token(const GiNaC::numeric &numeric) {
-        type = NUMBER;
-        number = numeric;
-    }
 
-    token::token(const ex &ex1) {
-        type = NUMBER;
-        number = ex1;
-
-    }
-
-    ex rpn_calc::parse(const std::string &line) {
+    long double parse_rpn(const std::string &line) {
+        std::vector<token> stack;
         std::string word;
         std::stringstream stringstream(line);
         while (stringstream >> word) {
@@ -87,162 +103,171 @@ namespace rpn {
             if (t.type == OPERATOR) {
                 switch (t.op) {
                     case ADD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        ex ex2(stack.back().number);
+                        long double ex2(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(ex1 + ex2));
                         break;
                     }
                     case SUBTRACT: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        ex ex2(stack.back().number);
+                        long double ex2(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(ex2 - ex1));
                         break;
                     }
                     case MULTIPLY: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        ex ex2(stack.back().number);
+                        long double ex2(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(ex1 * ex2));
                         break;
                     }
                     case DIVIDE: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        ex ex2(stack.back().number);
+                        long double ex2(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(ex2 / ex1));
                         break;
                     }
                     case SQUARE: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(pow(ex1, 2)));
                         break;
                     }
                     case SQRT: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(sqrt(ex1)));
                         break;
                     }
                     case POWER: {
-                        ex exp = stack.back().number;
+                        long double exp = stack.back().number;
                         stack.pop_back();
-                        ex base = stack.back().number;
+                        long double base = stack.back().number;
                         stack.pop_back();
                         stack.push_back(token(pow(base, exp)));
                         break;
                     }
                     case ROOT: {
-                        ex exp = stack.back().number;
+                        long double exp = stack.back().number;
                         stack.pop_back();
-                        ex base = stack.back().number;
+                        long double base = stack.back().number;
                         stack.pop_back();
                         stack.push_back(token(pow(base, 1 / exp)));
                         break;
                     }
                     case LOG_E: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(log(ex1)));
                         break;
                     }
                     case LOG_10: {
-                        /*FIXME: make these more efficient*/
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        stack.push_back(token(log(ex1) / log(10)));
+                        stack.push_back(token(log10(ex1)));
                         break;
                     }
                     case LOG_2: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        stack.push_back(token(log(ex1) / log(2)));
+                        stack.push_back(token(log2(ex1)));
                         break;
                     }
                     case LOG_A: {
-                        ex base(stack.back().number);
+                        long double base(stack.back().number);
                         stack.pop_back();
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        stack.push_back(token(log(ex1) / log(base)));
+                        stack.push_back(token(log2(ex1) / log2(base)));
                         break;
                     }
                     case EXP_E: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(exp(ex1)));
                         break;
                     }
                     case EXP_10: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        stack.push_back(token(pow(10,ex1)));
+                        stack.push_back(token(pow(10, ex1)));
                         break;
                     }
                     case EXP_2: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        stack.push_back(token(pow(2,ex1)));
+                        stack.push_back(token(exp2(ex1)));
                         break;
                     }
                     case SIN_RAD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(sin(ex1)));
                         break;
                     }
                     case COS_RAD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(cos(ex1)));
                         break;
                     }
                     case TAN_RAD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(tan(ex1)));
                         break;
                     }
                     case ASIN_RAD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(asin(ex1)));
                         break;
                     }
                     case ACOS_RAD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(acos(ex1)));
                         break;
                     }
                     case ATAN_RAD: {
-                        ex ex1(stack.back().number);
+                        long double ex1(stack.back().number);
                         stack.pop_back();
                         stack.push_back(token(atan(ex1)));
                         break;
                     }
-                    case EVAL: {
-                        ex ex1(stack.back().number);
+                    case ATAN2_RAD: {
+                        long double ex2(stack.back().number);
                         stack.pop_back();
-                        stack.emplace_back(ex1.evalf());
+                        long double ex1(stack.back().number);
+                        stack.pop_back();
+                        stack.push_back(token(atan2(ex1, ex2)));
                         break;
                     }
-                    case EVAL_N_DIGITS: {
-                        ex digits (stack.back().number);
+                    case FLOOR: {
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        ex ex1(stack.back().number);
+                        stack.push_back(token(floor(ex1)));
+                        break;
+                    }
+                    case CEIL: {
+                        long double ex1(stack.back().number);
                         stack.pop_back();
-                        Digits = ex_to<numeric>(digits.evalf()).to_double();
-                        stack.emplace_back(ex1.evalf());
+                        stack.push_back(token(ceil(ex1)));
                         break;
                     }
                     default:
+                        cerr << endl;
+                        cerr << word << endl;
+                        cerr << t.type << endl;
+                        cerr << t.number << endl;
+                        cerr << t.op << endl;
                         throw std::runtime_error("Invalid Token");
                 }
             } else {

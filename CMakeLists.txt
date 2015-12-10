@@ -14,3 +14,6 @@ set(SOURCE_FILES main.cpp rpn_calc.cpp rpn_calc.h)
 add_executable(rpn_calculator ${SOURCE_FILES})
 
 add_executable(test_rpn_calculator test_rpn_calculator.cpp rpn_calc.cpp)
+add_executable(test_cln test_cln.cpp)
+
+add_executable(test_divide_by_zero test_divide_by_zero.cpp)

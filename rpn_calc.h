@@ -1,19 +1,18 @@
 #ifndef RPN_CALCULATOR_RPN_H
 #define RPN_CALCULATOR_RPN_H
 
-#include <string>
-#include <stack>
-#include <forward_list>
-#include <vector>
-#include <ginac/ginac.h>
-#include <sstream>
 #include <iostream>
+#include <limits>
+#include <cmath>
 
 
 namespace rpn {
-    using std::cout;
-    using std::endl;
-    using namespace GiNaC;
+
+    const long double e = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178L;
+    const long double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482L;
+    const long double Pi = PI;
+    const long double pi = PI;
+    const auto long_double_threshold = std::sqrt(std::numeric_limits<long double>::epsilon());
 
     enum token_type {
         OPERATOR,
@@ -42,35 +41,25 @@ namespace rpn {
         ASIN_RAD,
         ACOS_RAD,
         ATAN_RAD,
-        EVAL,
-        EVAL_N_DIGITS
+        ATAN2_RAD,
+        FLOOR,
+        CEIL
     };
 
     struct token {
 
         token_type type;
         operator_type op;
-        GiNaC::ex number;
+        long double number;
 
         token(const std::string &str);
 
-        token(const GiNaC::numeric &);
-
-        token(const GiNaC::ex &);
+        token(const long double &num) : type(NUMBER), number(num) {};
 
     };
 
 
-    class rpn_calc {
-        std::vector<token> stack;
-
-    public:
-
-        rpn_calc() : stack() { };
-
-        ex parse(const std::string &line);
-
-    };
+    long double parse_rpn(const std::string &line);
 };
 
 #endif //RPN_CALCULATOR_RPN_H
