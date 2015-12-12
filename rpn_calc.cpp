@@ -30,7 +30,7 @@ namespace rpn {
     using std::fabs;
 
 
-    token::token(const std::string &str) {
+    token::token(const std::string &str, const std::unordered_map<std::string, long double> &variables) {
         if (str.front() >= '0' && str.front() <= '9') {
             type = NUMBER;
             number = std::stold(str);
@@ -40,6 +40,10 @@ namespace rpn {
         } else if (str == "e") {
             type = NUMBER;
             number = e;
+        } else if (variables.find(str) != variables.end()) {
+            /*a variable*/
+            type = NUMBER;
+            number = variables.at(str);
         } else {
             type = OPERATOR;
             if (str == "+") {
@@ -95,12 +99,12 @@ namespace rpn {
     }
 
 
-    long double parse_rpn(const std::string &line) {
+    long double parse_rpn(const std::string &line, const std::unordered_map<std::string, long double> &variables) {
         containers::stack<token> stack;
         std::string word;
         std::stringstream stringstream(line);
         while (stringstream >> word) {
-            token t(word);
+            token t(word, variables);
             if (t.type == OPERATOR) {
                 switch (t.op) {
                     case ADD: {

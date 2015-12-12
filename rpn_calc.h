@@ -2,6 +2,7 @@
 #define RPN_CALCULATOR_RPN_H
 
 #include <iostream>
+#include <unordered_map>
 #include <limits>
 #include <cmath>
 
@@ -55,14 +56,15 @@ namespace rpn {
         operator_type op;
         long double number;
 
-        token(const std::string &str);
+        token(const std::string &str, const std::unordered_map<std::string, long double> &variables);
 
         token(const long double &num) : type(NUMBER), number(num) { };
 
     };
 
 
-    long double parse_rpn(const std::string &line);
+    long double parse_rpn(const std::string &line, const std::unordered_map<std::string, long double> &variables);
+
 };
 
 #endif //RPN_CALCULATOR_RPN_H

@@ -1,6 +1,7 @@
 #include <ios>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include <cstring>
 #include <iomanip>
 #include "rpn_calc.h"
@@ -11,7 +12,10 @@ int main() {
     using std::endl;
     using std::cin;
     using namespace rpn;
+
     std::string line;
+    std::unordered_map<std::string, long double> variables;
+
     while (getline(cin, line)) {
         if (line == "q" || line == "quit" || line == "exit") {
             /*quit when the user asks*/
@@ -33,10 +37,20 @@ int main() {
                        !std::strncmp(line.c_str(), "#dig ", strlen("#dig "))) {
                 std::size_t idx = line.find(" ") + 1;
                 cout << std::setprecision(std::atoi(line.substr(idx).c_str()));
+            } else if (!std::strncmp(line.c_str(), "#define ", strlen("#define ")) ||
+                    !std::strncmp(line.c_str(), "#d ", strlen("#d "))) {
+                /*get a variable. The rest of the line is treated as an expression*/
+                std::size_t idx = line.find(" ") + 1;
+                std::stringstream stream(line.substr(idx).c_str());
+                std::string varname;
+                std::string varcontent;
+                stream >> varname;
+                getline(stream, varcontent);
+                variables[varname] = parse_rpn(varcontent, variables);
             }
         } else {
             try {
-                cout << parse_rpn(line) << endl;
+                cout << parse_rpn(line, variables) << endl;
             } catch (std::runtime_error &e) {
                 cerr << "Error: " << e.what() << endl;
             }
