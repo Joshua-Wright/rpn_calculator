@@ -14,7 +14,6 @@ int main() {
             break;
         }
         try {
-
             cout << parse_rpn(line) << endl;
         } catch (std::runtime_error &e) {
             cerr << "Error: " << e.what() << endl;
