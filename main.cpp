@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <cstring>
 #include <iomanip>
+#include "linenoise/linenoise.h"
 #include "rpn_calc.h"
 
 int main() {
@@ -13,12 +14,23 @@ int main() {
     using std::cin;
     using namespace rpn;
 
-    std::string line;
+    char *line_c_str;
     std::unordered_map<std::string, long double> variables;
 
-    while (getline(cin, line)) {
+//    linenoisePrintKeyCodes();
+
+    while ((line_c_str = linenoise(">> ")) != NULL) {
+        if (line_c_str[0] == '\0') {
+            /*stil need to free the c string manually*/
+            free(line_c_str);
+            continue;
+        }
+        linenoiseHistoryAdd(line_c_str);
+        std::string line(line_c_str);
         if (line == "q" || line == "quit" || line == "exit") {
             /*quit when the user asks*/
+            /*stil need to free the c string manually*/
+            free(line_c_str);
             return 0;
         } else if (line[0] == '#') {
             /*handle stuffs*/
@@ -38,7 +50,7 @@ int main() {
                 std::size_t idx = line.find(" ") + 1;
                 cout << std::setprecision(std::atoi(line.substr(idx).c_str()));
             } else if (!std::strncmp(line.c_str(), "#define ", strlen("#define ")) ||
-                    !std::strncmp(line.c_str(), "#d ", strlen("#d "))) {
+                       !std::strncmp(line.c_str(), "#d ", strlen("#d "))) {
                 /*get a variable. The rest of the line is treated as an expression*/
                 std::size_t idx = line.find(" ") + 1;
                 std::stringstream stream(line.substr(idx).c_str());
@@ -55,6 +67,8 @@ int main() {
                 cerr << "Error: " << e.what() << endl;
             }
         }
+        /*need to free the c string manually*/
+        free(line_c_str);
     }
     return 0;
 }
