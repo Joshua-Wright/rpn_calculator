@@ -8,10 +8,12 @@
 
 namespace rpn {
 
+    /*constants to 100 digits, because overkill is nice*/
     constexpr const long double e = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427L;
     constexpr const long double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068L;
     constexpr const long double Pi = PI;
     constexpr const long double pi = PI;
+    /*handy threshold for comparing doubles for equality*/
     constexpr const auto long_double_threshold = std::sqrt(std::numeric_limits<long double>::epsilon());
 
     enum token_type {
@@ -48,6 +50,7 @@ namespace rpn {
 
     struct token {
 
+        /*TODO: make this more compact (maybe using a union?)*/
         token_type type;
         operator_type op;
         long double number;
