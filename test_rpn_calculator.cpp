@@ -26,29 +26,36 @@ int main(int argc, char const *argv[]) {
     using std::floor;
     using std::fabs;
 
+    std::unordered_map<std::string, long double> variables;
+    variables["asdf"] = 4.5L;
+    variables["a"] = 10L;
+    variables["b"] = -50L;
+
     {
-        assert(parse_rpn("4 3 +") == 4+3);
-        assert(parse_rpn("4 3 + 5 2 - / 8 *") == 56.0L/3.0L);
-        assert(parse_rpn("5 ^2") == 25);
-        assert(parse_rpn("9 sqrt") == 3);
-        assert(parse_rpn("125 3 root") == 5);
-        assert(parse_rpn("125 3 rt") == 5);
-        assert(parse_rpn("3 3 pow") == 27);
-        assert(parse_rpn("3 4 ^") == 81);
-        assert(parse_rpn("4 30 ^") == 1152921504606846976);
-        assert(parse_rpn("10000 10 loga") == 4);
-        assert(parse_rpn("10000 log") == 4);
-        assert(parse_rpn("4294967296 lg") == 32);
-        assert(parse_rpn("4294967296 lg") == 32);
-        assert(parse_rpn("pi") == Pi);
-        assert(parse_rpn("Pi") == Pi);
-        assert(parse_rpn("PI") == Pi);
-        assert(parse_rpn("PI sin") == sin(Pi));
-        assert(parse_rpn("PI cos") == cos(Pi));
-        assert(parse_rpn("PI tan") == tan(Pi));
-        assert(fabs(parse_rpn("0.3450 asin") - asin(0.3450)) < long_double_threshold);
-        assert(fabs(parse_rpn("0.7345 acos") - acos(0.7345)) < long_double_threshold);
-        assert(fabs(parse_rpn("0.1234 atan") - atan(0.1234)) < long_double_threshold);
+        assert(parse_rpn("4 3 +", variables) == 4+3);
+        assert(parse_rpn("4 3 + 5 2 - / 8 *", variables) == 56.0L/3.0L);
+        assert(parse_rpn("5 ^2", variables) == 25);
+        assert(parse_rpn("9 sqrt", variables) == 3);
+        assert(parse_rpn("125 3 root", variables) == 5);
+        assert(parse_rpn("125 3 rt", variables) == 5);
+        assert(parse_rpn("3 3 pow", variables) == 27);
+        assert(parse_rpn("3 4 ^", variables) == 81);
+        assert(parse_rpn("4 30 ^", variables) == 1152921504606846976);
+        assert(parse_rpn("10000 10 loga", variables) == 4);
+        assert(parse_rpn("10000 log", variables) == 4);
+        assert(parse_rpn("4294967296 lg", variables) == 32);
+        assert(parse_rpn("4294967296 lg", variables) == 32);
+        assert(parse_rpn("pi", variables) == Pi);
+        assert(parse_rpn("Pi", variables) == Pi);
+        assert(parse_rpn("PI", variables) == Pi);
+        assert(parse_rpn("PI sin", variables) == sin(Pi));
+        assert(parse_rpn("PI cos", variables) == cos(Pi));
+        assert(parse_rpn("PI tan", variables) == tan(Pi));
+        assert(fabs(parse_rpn("0.3450 asin", variables) - asin(0.3450)) < long_double_threshold);
+        assert(fabs(parse_rpn("0.7345 acos", variables) - acos(0.7345)) < long_double_threshold);
+        assert(fabs(parse_rpn("0.1234 atan", variables) - atan(0.1234)) < long_double_threshold);
+        assert(parse_rpn("asdf 5 +", variables) == 4.5 + 5);
+        assert(parse_rpn("a b 5 + +", variables) == 10 - 50 + 5);
     }
 
     return 0;
