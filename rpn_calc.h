@@ -8,11 +8,11 @@
 
 namespace rpn {
 
-    const long double e = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178L;
-    const long double PI = 3.14159265358979323846264338327950288419716939937510582097494459230781640628620899862803482L;
-    const long double Pi = PI;
-    const long double pi = PI;
-    const auto long_double_threshold = std::sqrt(std::numeric_limits<long double>::epsilon());
+    constexpr const long double e = 2.718281828459045235360287471352662497757247093699959574966967627724076630353547594571382178525166427L;
+    constexpr const long double PI = 3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068L;
+    constexpr const long double Pi = PI;
+    constexpr const long double pi = PI;
+    constexpr const auto long_double_threshold = std::sqrt(std::numeric_limits<long double>::epsilon());
 
     enum token_type {
         OPERATOR,
@@ -54,7 +54,7 @@ namespace rpn {
 
         token(const std::string &str);
 
-        token(const long double &num) : type(NUMBER), number(num) {};
+        token(const long double &num) : type(NUMBER), number(num) { };
 
     };
 
