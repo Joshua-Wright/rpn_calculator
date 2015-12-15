@@ -31,7 +31,7 @@ namespace rpn {
 
 
     token::token(const std::string &str, const std::unordered_map<std::string, long double> &variables) {
-        if (str.front() >= '0' && str.front() <= '9') {
+        if ((str.front() >= '0' && str.front() <= '9') || str.front() == '.') {
             type = NUMBER;
             number = std::stold(str);
         } else if (str == "pi" || str == "Pi" || str == "PI") {
@@ -93,7 +93,7 @@ namespace rpn {
             } else if (str == "ceil") {
                 op = CEIL;
             } else {
-                throw std::runtime_error("Invalid Token");
+                throw std::runtime_error("Invalid Token: " + str);
             }
         }
     }
