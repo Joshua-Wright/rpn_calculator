@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lginac -lcln") # for ginac
-    
+
 set(SOURCE_FILES main.cpp rpn_calc.cpp rpn_calc.h)
 add_executable(rpn_calculator ${SOURCE_FILES} linenoise/linenoise.c linenoise/linenoise.h)
 add_executable(test_rpn_calculator 
