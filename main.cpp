@@ -17,8 +17,6 @@ int main() {
     char *line_c_str;
     std::unordered_map<std::string, long double> variables;
 
-//    linenoisePrintKeyCodes();
-
     while ((line_c_str = linenoise(">> ")) != NULL) {
         if (line_c_str[0] == '\0') {
             /*stil need to free the c string manually*/
@@ -34,7 +32,7 @@ int main() {
             return 0;
         } else if (line[0] == '#') {
             /*handle stuffs*/
-            /*this line has no math so parse_rpn() won't know what to do with it*/
+            /*this part has no math so parse_rpn() won't know what to do with it*/
             if (line == "#hex") {
                 cout << std::hexfloat;
             } else if (line == "#def" || line == "#default") {

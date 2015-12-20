@@ -56,6 +56,7 @@ int main(int argc, char const *argv[]) {
         assert(fabs(parse_rpn("0.1234 atan", variables) - atan(0.1234)) < long_double_threshold);
         assert(parse_rpn("asdf 5 +", variables) == 4.5 + 5);
         assert(parse_rpn("a b 5 + +", variables) == 10 - 50 + 5);
+        assert(parse_rpn("50 3 mod", variables) == 50 % 3);
     }
 
     return 0;

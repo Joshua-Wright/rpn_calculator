@@ -15,7 +15,7 @@ namespace rpn {
     constexpr const long double Pi = PI;
     constexpr const long double pi = PI;
     /*handy threshold for comparing doubles for equality*/
-    constexpr const auto long_double_threshold = std::sqrt(std::numeric_limits<long double>::epsilon());
+    constexpr const long double long_double_threshold = (const long double) std::sqrt(std::numeric_limits<long double>::epsilon());
 
     enum token_type {
         OPERATOR,
@@ -46,8 +46,8 @@ namespace rpn {
         ATAN_RAD,
         ATAN2_RAD,
         FLOOR,
-        CEIL
-        /*TODO: modulo*/
+        CEIL,
+        MODULO
     };
 
     struct token {
@@ -58,6 +58,7 @@ namespace rpn {
         long double number;
 
         token(const std::string &str, const std::unordered_map<std::string, long double> &variables);
+        token() {};
 
         token(const long double &num) : type(NUMBER), number(num) { };
 

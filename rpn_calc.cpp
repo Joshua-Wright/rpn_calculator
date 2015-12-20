@@ -92,6 +92,8 @@ namespace rpn {
                 op = FLOOR;
             } else if (str == "ceil") {
                 op = CEIL;
+            } else if (str == "mod") {
+                op = MODULO;
             } else {
                 throw std::runtime_error("Invalid Token: " + str);
             }
@@ -100,7 +102,7 @@ namespace rpn {
 
 
     long double parse_rpn(const std::string &line, const std::unordered_map<std::string, long double> &variables) {
-        containers::stack<token> stack;
+        containers::stack<token> stack(50);
         std::string word;
         std::stringstream stringstream(line);
         while (stringstream >> word) {
@@ -233,6 +235,12 @@ namespace rpn {
                     case CEIL: {
                         long double ex1(stack.pop().number);
                         stack.push(token(ceil(ex1)));
+                        break;
+                    }
+                    case MODULO: {
+                        long double ex1(stack.pop().number);
+                        long double ex2(stack.pop().number);
+                        stack.push(token(std::fmod(ex2,ex1)));
                         break;
                     }
                     default:
