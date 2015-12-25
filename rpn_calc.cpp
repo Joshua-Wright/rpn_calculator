@@ -240,7 +240,7 @@ namespace rpn {
                     case MODULO: {
                         long double ex1(stack.pop().number);
                         long double ex2(stack.pop().number);
-                        stack.push(token(std::fmod(ex2,ex1)));
+                        stack.push(token(std::fmod(ex2, ex1)));
                         break;
                     }
                     default:
@@ -256,5 +256,72 @@ namespace rpn {
             }
         }
         return stack.pop().number;
+    }
+
+    std::vector<token> tokenize_expression(const std::string &line) {
+        std::vector<token> stack;
+        const std::unordered_map<std::string, long double> variables;
+        std::string word;
+        std::stringstream stringstream(line);
+        while (stringstream >> word) {
+            token t(word, variables);
+            stack.push_back(t);
+        }
+        return stack;
+    }
+
+    const std::string get_op_string(operator_type op) {
+        switch (op) {
+            case ADD:
+                return "+";
+            case SUBTRACT:
+                return "-";
+            case MULTIPLY:
+                return "*";
+            case DIVIDE:
+                return "/";
+            case SQUARE:
+                return "^2";
+            case SQRT:
+                return "sqrt";
+            case POWER:
+                return "pow";
+            case ROOT:
+                return "root";
+            case LOG_E:
+                return "ln";
+            case LOG_10:
+                return "log";
+            case LOG_2:
+                return "lg";
+            case LOG_A:
+                return "loga";
+            case EXP_E:
+                return "exp";
+            case EXP_10:
+                return "exp10";
+            case EXP_2:
+                return "exp2";
+            case SIN_RAD:
+                return "sin";
+            case COS_RAD:
+                return "cos";
+            case TAN_RAD:
+                return "tan";
+            case ASIN_RAD:
+                return "asin";
+            case ACOS_RAD:
+                return "acos";
+            case ATAN_RAD:
+                return "atan";
+            case FLOOR:
+                return "floor";
+            case CEIL:
+                return "ceil";
+            case MODULO:
+                return "mod";
+            default:
+                return "ERROR";
+        }
     }
 }

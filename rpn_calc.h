@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <limits>
 #include <cmath>
+#include <vector>
 
 
 namespace rpn {
@@ -15,7 +16,8 @@ namespace rpn {
     constexpr const long double Pi = PI;
     constexpr const long double pi = PI;
     /*handy threshold for comparing doubles for equality*/
-    constexpr const long double long_double_threshold = (const long double) std::sqrt(std::numeric_limits<long double>::epsilon());
+    constexpr const long double long_double_threshold = (const long double) std::sqrt(
+            std::numeric_limits<long double>::epsilon());
 
     enum token_type {
         OPERATOR,
@@ -58,7 +60,8 @@ namespace rpn {
         long double number;
 
         token(const std::string &str, const std::unordered_map<std::string, long double> &variables);
-        token() {};
+
+        token() { };
 
         token(const long double &num) : type(NUMBER), number(num) { };
 
@@ -66,6 +69,10 @@ namespace rpn {
 
 
     long double parse_rpn(const std::string &line, const std::unordered_map<std::string, long double> &variables);
+
+    std::vector<token> tokenize_expression(const std::string &line);
+
+    const std::string get_op_string(operator_type op);
 
 };
 

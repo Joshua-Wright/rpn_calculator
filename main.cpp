@@ -6,6 +6,7 @@
 #include <iomanip>
 #include "linenoise/linenoise.h"
 #include "rpn_calc.h"
+#include "expression_tree.h"
 
 int main() {
     using std::cerr;
@@ -57,6 +58,13 @@ int main() {
                 stream >> varname;
                 getline(stream, varcontent);
                 variables[varname] = parse_rpn(varcontent, variables);
+            } else if (!std::strncmp(line.c_str(), "#tree ", strlen("#tree ")) ||
+                       !std::strncmp(line.c_str(), "#t ", strlen("#t "))) {
+                /*print parse tree*/
+                std::size_t idx = line.find(" ") + 1;
+                std::string newline = line.substr(idx);
+                tree_node head = rpn::render_expression_tree(newline);
+                print_tree(head);
             }
         } else {
             try {
