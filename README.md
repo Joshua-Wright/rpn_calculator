@@ -7,8 +7,8 @@ uses `long double` as it's numeric data type.
 
 Operators:
 
-| name        | function                |
-| ----------- | ----------------------- |
+| name    | function                |
+| --------| ----------------------- |
 | `+`     | addition                |
 | `-`     | subtraction             |
 | `/`     | division                |
@@ -34,3 +34,24 @@ Operators:
 | `atan`  | arc tangent             |
 | `floor` | next smaller integer    |
 | `ceil`  | next larger integer     |
+
+
+Special Functions:  
+
+| name         | function                              |
+| ------------ | --------                              |
+|`#hex`        | format output as hex float            |
+|`#def`        | format output as default              |
+|`#default`    | format output as default              |
+|`#fix`        | format output as fixed                |
+|`#fixed`      | format output as fixed                |
+|`#sci`        | format output in scientific notation  |
+|`#scientific` | format output in scientific notation  |
+|`#max`        | use maximum number of digits          |
+|`#maxdigits`  | use maximum number of digits          |
+|`#digits`     | use n digits                          |
+|`#dig`        | use n digits                          |
+|`#define`     | define a variable                     |
+|`#d`          | define a variable                     |
+|`#tree`       | print a syntax tree for an expression |
+|`#t`          | print a syntax tree for an expression |
