@@ -1,11 +1,20 @@
 # rpn_calculator
 
-A basic RPN calculator.   
-uses `long double` as it's numeric data type.    
-`main.cpp` reads calculations from stdin (one per line) and prints the result to the console.   
+A basic RPN calculator.  
+`main.cpp` reads calculations from stdin (one per line) and prints the result to the console.  
 `test_rpn_calculator.cpp` does unit tests for math functions and parsing.  
 
-Operators:
+## Features:  
+* uses `long double` as it's numeric data type.  
+* many operators for all kinds of math
+* random number function
+* control of output format (fixed, scientific, hex) and precision
+* can print expression trees to more easily visualize RPN expressions
+
+## Screenshot:  
+![](http://i.imgur.com/h0SrWnX.png)
+
+### Operators:
 
 | name    | function                |
 | --------| ----------------------- |
@@ -36,7 +45,7 @@ Operators:
 | `ceil`  | next larger integer     |
 
 
-Special Functions:  
+### Special Functions:  
 
 | name         | function                              |
 | ------------ | --------                              |
