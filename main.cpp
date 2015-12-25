@@ -3,12 +3,13 @@
 #include <string>
 #include <unordered_map>
 #include <cstring>
+#include <random>
 #include <iomanip>
 #include "linenoise/linenoise.h"
 #include "rpn_calc.h"
 #include "expression_tree.h"
 
-int main() {
+int main(int argc, char** argv) {
     using std::cerr;
     using std::cout;
     using std::endl;
@@ -17,6 +18,14 @@ int main() {
 
     char *line_c_str;
     std::unordered_map<std::string, long double> variables;
+    /*TODO: seed this better*/
+    std::srand((unsigned int) std::time(nullptr));
+
+    if ( argc >= 2 && !strcmp(argv[1], "-e")) {
+        /*evaluate the argument as an expression*/
+        cout << parse_rpn(argv[2], variables) << endl;
+        return 0;
+    }
 
     while ((line_c_str = linenoise(">> ")) != NULL) {
         if (line_c_str[0] == '\0') {

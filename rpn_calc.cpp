@@ -40,6 +40,10 @@ namespace rpn {
         } else if (str == "e") {
             type = NUMBER;
             number = e;
+        } else if (str == "rand") {
+            /*random number between 0 and 1*/
+            type = NUMBER;
+            number = std::rand() * 1.0L / RAND_MAX;
         } else if (variables.find(str) != variables.end()) {
             /*a variable*/
             type = NUMBER;
